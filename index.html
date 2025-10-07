@@ -5,6 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NewBase Renovations – Basement Design & Estimate</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Mini Designer styles */
+    .cell {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border: 1px dashed #e5e7eb; /* tailwind gray-200 */
+      border-radius: 0.5rem;       /* rounded-xl */
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; color: #111827; /* gray-900 */
+      user-select: none; cursor: pointer;
+      background: #fff;
+    }
+    .cell-B  { background: #dbebff; border-color:#93c5fd; }   /* Bedroom */
+    .cell-Ba { background: #ffe8e8; border-color:#fca5a5; }   /* Bathroom */
+    .cell-O  { background: #e0ffe8; border-color:#86efac; }   /* Office */
+    .cell-L  { background: #fff5d6; border-color:#fcd34d; }   /* Laundry */
+    .cell-W  { background: #efe9ff; border-color:#c4b5fd; }   /* Wet Bar */
+    .cell-K  { background: #e7fff8; border-color:#99f6e4; }   /* Kitchenette */
+    .tool-btn.active { background:#111827; color:#fff; }
+  </style>
 </head>
 <body class="min-h-screen bg-white text-gray-900">
   <!-- Navbar -->
@@ -46,9 +66,10 @@
     </div>
   </section>
 
-  <!-- Estimator -->
+  <!-- Designer + Estimator -->
   <section id="design" class="max-w-6xl mx-auto px-4 py-12">
     <div class="grid lg:grid-cols-2 gap-8 items-start">
+      <!-- Inputs -->
       <div class="p-6 rounded-2xl border bg-white shadow-sm space-y-4">
         <h2 class="text-xl font-bold">Design Your Basement</h2>
         <p class="text-gray-600">This quick planner gives a realistic price range. Final quotes follow a site visit and drawings.</p>
@@ -63,7 +84,7 @@
             </select>
           </label>
           <label class="text-sm">Bedrooms
-            <input id="bedrooms" type="number" min="0" max="3" value="1" class="mt-1 w-full px-4 py-3 rounded-xl border" />
+            <input id="bedrooms" type="number" min="0" max="6" value="1" class="mt-1 w-full px-4 py-3 rounded-xl border" />
           </label>
           <label class="text-sm">Bathroom
             <select id="bath" class="mt-1 w-full px-4 py-3 rounded-xl border">
@@ -86,10 +107,38 @@
         </div>
 
         <div class="mt-4 text-xs text-gray-500">
-          * Egress, ceiling, and alarms shown for guidance—final design must meet local code.
+          * Egress, ceiling, and alarms are guidance only—final design must meet local code.
+        </div>
+
+        <!-- Mini Layout Designer -->
+        <div class="mt-8 p-6 rounded-2xl border bg-white shadow-sm">
+          <h3 class="font-semibold mb-2">Quick Layout (optional)</h3>
+          <p class="text-gray-600 text-sm mb-4">Pick a module, then click on grid cells to place it. We’ll auto-update the estimator.</p>
+
+          <!-- Palette -->
+          <div class="flex flex-wrap gap-2 mb-4">
+            <button type="button" data-tool="B"  class="tool-btn px-3 py-2 rounded-xl border">Bedroom (B)</button>
+            <button type="button" data-tool="Ba" class="tool-btn px-3 py-2 rounded-xl border">Bathroom (Ba)</button>
+            <button type="button" data-tool="O"  class="tool-btn px-3 py-2 rounded-xl border">Office (O)</button>
+            <button type="button" data-tool="L"  class="tool-btn px-3 py-2 rounded-xl border">Laundry (L)</button>
+            <button type="button" data-tool="W"  class="tool-btn px-3 py-2 rounded-xl border">Wet Bar (W)</button>
+            <button type="button" data-tool="K"  class="tool-btn px-3 py-2 rounded-xl border">Kitchenette (K)</button>
+            <button type="button" id="eraser"    class="px-3 py-2 rounded-xl border">Eraser</button>
+            <button type="button" id="clearGrid" class="px-3 py-2 rounded-xl border">Clear Grid</button>
+          </div>
+
+          <!-- Grid 12 x 6 -->
+          <div id="miniGrid" class="grid grid-cols-12 gap-1 select-none">
+            <!-- 72 cells -->
+            <!-- rows -->
+            <!-- We create with JS for cleaner DOM -->
+          </div>
+
+          <p class="text-xs text-gray-500 mt-3">Tip: One “Ba” counts as a 3-pc bath. Add more “Ba” for multiple baths (estimator uses the first for pricing).</p>
         </div>
       </div>
 
+      <!-- Results -->
       <div class="p-6 rounded-2xl border bg-white shadow-sm">
         <h3 class="font-semibold">Estimated Price Range</h3>
         <p class="text-gray-600 text-sm">Based on inputs and typical conditions in Ontario.</p>
@@ -136,41 +185,138 @@
   </footer>
 
   <script>
+    // Year
     document.getElementById("y").textContent = new Date().getFullYear();
 
-    const RATES = { Starter: 80, "Suite-Ready": 110, Luxury: 150 };
-    function cad(n){return n.toLocaleString(undefined,{style:"currency",currency:"CAD",maximumFractionDigits:0});}
-    function estimate(){
-      const sqft=+sqftEl.value||0,finish=finishEl.value,bed=+bedEl.value||0,bath=bathEl.value;
-      const base=sqft*(RATES[finish]||0);
-      const mods=bed*5000+(bath=="None"?0:bath=="2-pc"?6000:12000)
-        +(officeEl.checked?3000:0)+(laundryEl.checked?4000:0)
-        +(wetbarEl.checked?7000:0)+(kitchenetteEl.checked?15000:0);
-      const lowCeil=ceilingEl.value<7.5?.1*(base+mods):0;
-      const egressAmt=egressEl.checked?3000*Math.max(1,bed):0;
-      const roughCred=roughEl.checked?-2000:0;
-      const soundAmt=soundEl.checked?.015*(base+mods):0;
-      const subtotal=base+mods+lowCeil+egressAmt+soundAmt+roughCred;
-      const low=subtotal*.9,high=subtotal*1.1;
-      priceLow.textContent=cad(low);priceHigh.textContent=cad(high);
-      baseEl.textContent=cad(base);modulesEl.textContent=cad(mods);
-      lowCeilEl.textContent=cad(lowCeil);egressAmtEl.textContent=cad(egressAmt);
-      soundAmtEl.textContent=cad(soundAmt);roughAmtEl.textContent=cad(roughCred);
-      subtotalEl.textContent=cad(subtotal);
-      lowRow.classList.toggle("hidden",!lowCeil);
-      egressRow.classList.toggle("hidden",!egressAmt);
-      soundRow.classList.toggle("hidden",!soundAmt);
-      roughRow.classList.toggle("hidden",!roughCred);
+    // --- Estimator ---
+    const RATES = { Starter: 80, "Suite-Ready": 110, Luxury: 150 }; // CAD per sq ft
+    const $ = id => document.getElementById(id);
+    function cad(n){ return n.toLocaleString(undefined, { style: "currency", currency: "CAD", maximumFractionDigits: 0 }); }
+
+    function estimate() {
+      const sqft       = +$('sqft').value || 0;
+      const finish     = $('finish').value;
+      const bedrooms   = +$('bedrooms').value || 0;
+      const bath       = $('bath').value;
+      const office     = $('office').checked;
+      const laundry    = $('laundry').checked;
+      const wetbar     = $('wetbar').checked;
+      const kitchenette= $('kitchenette').checked;
+      const ceiling    = +$('ceiling').value || 8;
+      const egress     = $('egress').checked;
+      const roughIns   = $('roughins').checked;
+      const sound      = $('sound').checked;
+
+      const base = sqft * (RATES[finish] || 0);
+      const modules =
+        bedrooms * 5000 +
+        (bath === "None" ? 0 : bath === "2-pc" ? 6000 : 12000) +
+        (office ? 3000 : 0) +
+        (laundry ? 4000 : 0) +
+        (wetbar ? 7000 : 0) +
+        (kitchenette ? 15000 : 0);
+
+      const lowCeilingAdj = ceiling < 7.5 ? 0.10 * (base + modules) : 0;
+      const egressAmt = egress ? 3000 * Math.max(1, bedrooms) : 0;
+      const roughInsCredit = roughIns ? -2000 : 0;
+      const soundAmt = sound ? 0.015 * (base + modules) : 0;
+
+      const subtotal = base + modules + lowCeilingAdj + egressAmt + soundAmt + roughInsCredit;
+      const low = subtotal * 0.9, high = subtotal * 1.1;
+
+      $('priceLow').textContent = cad(low);
+      $('priceHigh').textContent = cad(high);
+      $('base').textContent = cad(base);
+      $('modules').textContent = cad(modules);
+      $('lowCeiling').textContent = cad(lowCeilingAdj);
+      $('egressAmt').textContent = cad(egressAmt);
+      $('soundAmt').textContent = cad(soundAmt);
+      $('roughInsAmt').textContent = cad(roughInsCredit);
+      $('subtotal').textContent = cad(subtotal);
+
+      $('lowCeilingRow').classList.toggle('hidden', lowCeilingAdj === 0);
+      $('egressRow').classList.toggle('hidden', egressAmt === 0);
+      $('soundRow').classList.toggle('hidden', soundAmt === 0);
+      $('roughInRow').classList.toggle('hidden', roughInsCredit === 0);
     }
-    const sqftEl=sqft,finishEl=finish,bedEl=bedrooms,bathEl=bath,
-          officeEl=office,laundryEl=laundry,wetbarEl=wetbar,
-          kitchenetteEl=kitchenette,ceilingEl=ceiling,
-          egressEl=egress,roughEl=roughins,soundEl=sound,
-          priceLow=priceLow,priceHigh=priceHigh,baseEl=base,
-          modulesEl=modules,lowCeilEl=lowCeiling,egressAmtEl=egressAmt,
-          soundAmtEl=soundAmt,roughAmtEl=roughInsAmt,subtotalEl=subtotal,
-          lowRow=lowCeilingRow,egressRow=egressRow,soundRow=soundRow,roughRow=roughInRow;
-    document.addEventListener("input",estimate);
+
+    // Watch for changes on inputs
+    ['sqft','finish','bedrooms','bath','office','laundry','wetbar','kitchenette','ceiling','egress','roughins','sound']
+      .forEach(id => {
+        document.addEventListener('input', (e) => { if (e.target && e.target.id === id) estimate(); });
+        document.addEventListener('change', (e) => { if (e.target && e.target.id === id) estimate(); });
+      });
+
+    // --- Mini Layout Designer ---
+    (function initDesigner(){
+      const grid = $('miniGrid');
+      // create 12 x 6 = 72 cells
+      const cols = 12, rows = 6;
+      const codeFor = { B: 'B', Ba: 'Ba', O: 'O', L: 'L', W: 'W', K: 'K' };
+      let currentTool = null; // 'B', 'Ba', 'O', 'L', 'W', 'K', or null for eraser
+
+      for (let i=0;i<rows*cols;i++){
+        const d = document.createElement('div');
+        d.className = 'cell';
+        d.dataset.code = ''; // empty = blank
+        d.addEventListener('click', () => {
+          if (currentTool === null) {
+            // erase
+            d.dataset.code = '';
+            d.textContent = '';
+            d.className = 'cell';
+          } else {
+            d.dataset.code = currentTool;
+            d.textContent = currentTool;
+            d.className = 'cell cell-' + currentTool;
+          }
+          syncInputsFromGrid();
+        });
+        grid.appendChild(d);
+      }
+
+      // Palette selection
+      const toolBtns = Array.from(document.querySelectorAll('.tool-btn'));
+      toolBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          toolBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentTool = btn.getAttribute('data-tool'); // set current
+        });
+      });
+      $('eraser').addEventListener('click', () => {
+        toolBtns.forEach(b => b.classList.remove('active'));
+        currentTool = null;
+      });
+      $('clearGrid').addEventListener('click', () => {
+        Array.from(grid.children).forEach(c => { c.dataset.code=''; c.textContent=''; c.className='cell'; });
+        syncInputsFromGrid();
+      });
+
+      function syncInputsFromGrid(){
+        const codes = Array.from(grid.children).map(c => c.dataset.code);
+        const count = (t) => codes.filter(x => x === t).length;
+
+        const beds = count('B');
+        const baths = count('Ba');
+        const hasO = count('O') > 0;
+        const hasL = count('L') > 0;
+        const hasW = count('W') > 0;
+        const hasK = count('K') > 0;
+
+        // Push to inputs (non-destructive)
+        $('bedrooms').value = String(beds);
+        if (baths > 0 && $('bath').value === 'None') $('bath').value = '3-pc';
+        $('office').checked = hasO || $('office').checked;
+        $('laundry').checked = hasL || $('laundry').checked;
+        $('wetbar').checked = hasW || $('wetbar').checked;
+        $('kitchenette').checked = hasK || $('kitchenette').checked;
+
+        estimate();
+      }
+    })();
+
+    // Initial estimate
     estimate();
   </script>
 </body>
