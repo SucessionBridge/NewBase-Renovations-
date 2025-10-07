@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NewBase Renovations – Basement Design & Estimate</title>
-  <!-- Tailwind via CDN (no build tools needed) -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen bg-white text-gray-900">
@@ -40,7 +39,6 @@
         </div>
       </div>
       <div class="aspect-[4/3] w-full rounded-3xl bg-gray-200 shadow-inner grid grid-cols-3 gap-2 p-2">
-        <!-- Placeholder gallery tiles -->
         <div class="rounded-2xl bg-white shadow"></div><div class="rounded-2xl bg-white shadow"></div><div class="rounded-2xl bg-white shadow"></div>
         <div class="rounded-2xl bg-white shadow"></div><div class="rounded-2xl bg-white shadow"></div><div class="rounded-2xl bg-white shadow"></div>
         <div class="rounded-2xl bg-white shadow"></div><div class="rounded-2xl bg-white shadow"></div><div class="rounded-2xl bg-white shadow"></div>
@@ -48,15 +46,87 @@
     </div>
   </section>
 
-  <!-- Placeholders for next steps -->
+  <!-- Estimator -->
   <section id="design" class="max-w-6xl mx-auto px-4 py-12">
-    <h2 class="text-2xl font-bold">Design Your Basement</h2>
-    <p class="text-gray-600 mt-2">We’ll add the simple estimator here in the next step.</p>
+    <div class="grid lg:grid-cols-2 gap-8 items-start">
+      <div class="p-6 rounded-2xl border bg-white shadow-sm space-y-4">
+        <h2 class="text-xl font-bold">Design Your Basement</h2>
+        <p class="text-gray-600">This quick planner gives a realistic price range. Final quotes follow a site visit and drawings.</p>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <label class="text-sm">Square Footage
+            <input id="sqft" type="number" min="200" step="50" value="800" class="mt-1 w-full px-4 py-3 rounded-xl border" />
+          </label>
+          <label class="text-sm">Finish Level
+            <select id="finish" class="mt-1 w-full px-4 py-3 rounded-xl border">
+              <option>Suite-Ready</option><option>Starter</option><option>Luxury</option>
+            </select>
+          </label>
+          <label class="text-sm">Bedrooms
+            <input id="bedrooms" type="number" min="0" max="3" value="1" class="mt-1 w-full px-4 py-3 rounded-xl border" />
+          </label>
+          <label class="text-sm">Bathroom
+            <select id="bath" class="mt-1 w-full px-4 py-3 rounded-xl border">
+              <option>3-pc</option><option>2-pc</option><option>None</option>
+            </select>
+          </label>
+          <label class="flex items-center gap-2 text-sm"><input id="office" type="checkbox" checked /> Office / Den</label>
+          <label class="flex items-center gap-2 text-sm"><input id="laundry" type="checkbox" checked /> Laundry</label>
+          <label class="flex items-center gap-2 text-sm"><input id="wetbar" type="checkbox" /> Wet Bar</label>
+          <label class="flex items-center gap-2 text-sm"><input id="kitchenette" type="checkbox" /> Kitchenette</label>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4 pt-2">
+          <label class="text-sm">Ceiling Height (ft)
+            <input id="ceiling" type="number" step="0.1" min="6.5" value="8.0" class="mt-1 w-full px-4 py-3 rounded-xl border" />
+          </label>
+          <label class="flex items-center gap-2 text-sm"><input id="egress" type="checkbox" checked /> Need egress window cut-in</label>
+          <label class="flex items-center gap-2 text-sm"><input id="roughins" type="checkbox" checked /> Rough-ins already in place</label>
+          <label class="flex items-center gap-2 text-sm"><input id="sound" type="checkbox" checked /> Enhanced soundproofing</label>
+        </div>
+
+        <div class="mt-4 text-xs text-gray-500">
+          * Egress, ceiling, and alarms shown for guidance—final design must meet local code.
+        </div>
+      </div>
+
+      <div class="p-6 rounded-2xl border bg-white shadow-sm">
+        <h3 class="font-semibold">Estimated Price Range</h3>
+        <p class="text-gray-600 text-sm">Based on inputs and typical conditions in Ontario.</p>
+
+        <div class="mt-4 grid grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl bg-gray-50 border">
+            <div class="text-xs text-gray-500">Low</div>
+            <div id="priceLow" class="text-2xl font-extrabold">$0</div>
+          </div>
+          <div class="p-4 rounded-xl bg-gray-50 border">
+            <div class="text-xs text-gray-500">High</div>
+            <div id="priceHigh" class="text-2xl font-extrabold">$0</div>
+          </div>
+        </div>
+
+        <div class="mt-6 space-y-2 text-sm">
+          <div class="flex justify-between"><span>Base</span><span id="base">$0</span></div>
+          <div class="flex justify-between"><span>Modules</span><span id="modules">$0</span></div>
+          <div class="flex justify-between hidden" id="lowCeilingRow"><span>Low ceiling adj.</span><span id="lowCeiling">$0</span></div>
+          <div class="flex justify-between hidden" id="egressRow"><span>Egress window(s)</span><span id="egressAmt">$0</span></div>
+          <div class="flex justify-between hidden" id="soundRow"><span>Soundproofing</span><span id="soundAmt">$0</span></div>
+          <div class="flex justify-between text-emerald-700 hidden" id="roughInRow"><span>Rough-ins credit</span><span id="roughInsAmt">$0</span></div>
+          <div class="flex justify-between font-semibold border-t pt-2"><span>Subtotal</span><span id="subtotal">$0</span></div>
+        </div>
+      </div>
+    </div>
   </section>
 
+  <!-- Contact -->
   <section id="contact" class="max-w-6xl mx-auto px-4 py-12">
-    <h2 class="text-2xl font-bold">Contact</h2>
-    <p class="text-gray-600 mt-2">We’ll add a quick form next.</p>
+    <h2 class="text-2xl font-bold mb-4">Contact Us</h2>
+    <form class="space-y-4 max-w-md" onsubmit="event.preventDefault();alert('Thank you! We will contact you shortly.');">
+      <input type="text" placeholder="Name" required class="w-full px-4 py-3 border rounded-xl" />
+      <input type="email" placeholder="Email" required class="w-full px-4 py-3 border rounded-xl" />
+      <textarea placeholder="Project details" rows="4" class="w-full px-4 py-3 border rounded-xl"></textarea>
+      <button type="submit" class="px-5 py-3 rounded-2xl bg-gray-900 text-white font-semibold w-full">Send Message</button>
+    </form>
   </section>
 
   <footer class="border-t">
@@ -64,6 +134,44 @@
       © <span id="y"></span> NewBase Renovations
     </div>
   </footer>
-  <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    const RATES = { Starter: 80, "Suite-Ready": 110, Luxury: 150 };
+    function cad(n){return n.toLocaleString(undefined,{style:"currency",currency:"CAD",maximumFractionDigits:0});}
+    function estimate(){
+      const sqft=+sqftEl.value||0,finish=finishEl.value,bed=+bedEl.value||0,bath=bathEl.value;
+      const base=sqft*(RATES[finish]||0);
+      const mods=bed*5000+(bath=="None"?0:bath=="2-pc"?6000:12000)
+        +(officeEl.checked?3000:0)+(laundryEl.checked?4000:0)
+        +(wetbarEl.checked?7000:0)+(kitchenetteEl.checked?15000:0);
+      const lowCeil=ceilingEl.value<7.5?.1*(base+mods):0;
+      const egressAmt=egressEl.checked?3000*Math.max(1,bed):0;
+      const roughCred=roughEl.checked?-2000:0;
+      const soundAmt=soundEl.checked?.015*(base+mods):0;
+      const subtotal=base+mods+lowCeil+egressAmt+soundAmt+roughCred;
+      const low=subtotal*.9,high=subtotal*1.1;
+      priceLow.textContent=cad(low);priceHigh.textContent=cad(high);
+      baseEl.textContent=cad(base);modulesEl.textContent=cad(mods);
+      lowCeilEl.textContent=cad(lowCeil);egressAmtEl.textContent=cad(egressAmt);
+      soundAmtEl.textContent=cad(soundAmt);roughAmtEl.textContent=cad(roughCred);
+      subtotalEl.textContent=cad(subtotal);
+      lowRow.classList.toggle("hidden",!lowCeil);
+      egressRow.classList.toggle("hidden",!egressAmt);
+      soundRow.classList.toggle("hidden",!soundAmt);
+      roughRow.classList.toggle("hidden",!roughCred);
+    }
+    const sqftEl=sqft,finishEl=finish,bedEl=bedrooms,bathEl=bath,
+          officeEl=office,laundryEl=laundry,wetbarEl=wetbar,
+          kitchenetteEl=kitchenette,ceilingEl=ceiling,
+          egressEl=egress,roughEl=roughins,soundEl=sound,
+          priceLow=priceLow,priceHigh=priceHigh,baseEl=base,
+          modulesEl=modules,lowCeilEl=lowCeiling,egressAmtEl=egressAmt,
+          soundAmtEl=soundAmt,roughAmtEl=roughInsAmt,subtotalEl=subtotal,
+          lowRow=lowCeilingRow,egressRow=egressRow,soundRow=soundRow,roughRow=roughInRow;
+    document.addEventListener("input",estimate);
+    estimate();
+  </script>
 </body>
 </html>
