@@ -12,9 +12,9 @@
       theme: {
         extend: {
           colors: {
-            brand: { 500:'#f59e0b' },          /* amber accent */
+            brand: { 500:'#f59e0b' },
             ink:   { 900:'#0f172a',700:'#1f2937',500:'#6b7280' },
-            trust: { 500:'#16a34a' }           /* green for guarantee badge */
+            trust: { 500:'#16a34a' }
           },
           boxShadow: { soft:'0 6px 30px rgba(15,23,42,0.08)' }
         }
@@ -25,6 +25,12 @@
     .chip{font-size:.75rem;padding:.25rem .6rem;border-radius:9999px;background:#f3f4f6}
     .preset-card.active{outline:3px solid #0f172a}
     .img-cover{object-fit:cover;object-position:center}
+    /* Minimal tooltip */
+    .tip{position:relative;display:inline-flex;align-items:center;justify-content:center;width:1.1rem;height:1.1rem;border-radius:9999px;background:#eef2ff;color:#0f172a;font-size:.7rem;cursor:help;margin-left:.4rem}
+    .tip:focus-visible{outline:2px solid #0f172a;outline-offset:2px}
+    .tip:hover .tip-card,.tip:focus .tip-card{opacity:1;transform:translateY(-4px);pointer-events:auto}
+    .tip-card{pointer-events:none;position:absolute;z-index:30;bottom:125%;left:50%;transform:translate(-50%,0);opacity:0;transition:.15s ease;min-width:220px;max-width:280px;background:white;border:1px solid #e5e7eb;border-radius:.6rem;box-shadow:0 10px 30px rgba(15,23,42,.08);padding:.55rem .7rem}
+    .tip-card p{font-size:.75rem;line-height:1.2rem;color:#374151}
   </style>
 </head>
 <body class="min-h-screen bg-white text-ink-900">
@@ -39,6 +45,7 @@
       </a>
       <nav class="hidden md:flex items-center gap-6 text-sm">
         <a href="#design" class="text-ink-500 hover:text-ink-900">Design</a>
+        <a href="#packages" class="text-ink-500 hover:text-ink-900">Packages</a>
         <a href="#snapshot" class="text-ink-500 hover:text-ink-900">Snapshot</a>
         <a href="#contact" class="text-ink-500 hover:text-ink-900">Contact</a>
       </nav>
@@ -49,9 +56,7 @@
   <!-- Hero -->
   <section id="home" class="relative">
     <div class="absolute inset-0">
-      <!-- HERO IMAGE: replace the URL with your own -->
       <img class="w-full h-full img-cover" src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1800&auto=format&fit=crop" alt="Modern basement living area">
-      <!-- Darken for readability -->
       <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/40"></div>
     </div>
 
@@ -65,7 +70,7 @@
         <p class="mt-4 text-lg text-white/90 max-w-xl">Design it in minutes, see instant pricing, and book a free site visit.</p>
         <div class="mt-7 flex flex-col sm:flex-row gap-3">
           <a href="#design" class="px-6 py-3 rounded-2xl bg-brand-500 text-black font-semibold shadow-soft">Design Your Basement →</a>
-          <a href="#contact" class="px-6 py-3 rounded-2xl bg-white/10 text-white font-semibold border border-white/30">Get a Quote</a>
+          <a href="#packages" class="px-6 py-3 rounded-2xl bg-white/10 text-white font-semibold border border-white/30">What's Included</a>
         </div>
       </div>
     </div>
@@ -100,7 +105,6 @@
         <div>
           <h3 class="font-semibold mb-3">Quick Presets</h3>
           <div class="grid sm:grid-cols-2 gap-4">
-            <!-- Starter (default active) -->
             <button type="button" class="preset-card rounded-2xl border p-4 text-left hover:shadow-soft transition active"
               data-preset='{"sqft":700,"finish":"Starter","bedrooms":0,"bath":"None","office":true,"laundry":true,"wetbar":false,"kitchenette":false}'>
               <div class="text-sm font-semibold">Rec Room + Storage</div>
@@ -173,7 +177,7 @@
         </div>
 
         <!-- Selected Modules Preview -->
-        <div class="p-4 rounded-xl bg-gray-50 border">
+        <div class="p-4 rounded-2xl bg-gray-50 border">
           <div class="text-sm font-semibold mb-2">Your Selection</div>
           <div id="chips" class="flex flex-wrap gap-2 text-sm"></div>
           <div class="text-xs text-ink-500 mt-2">Final scope confirmed after site visit & drawings.</div>
@@ -197,16 +201,79 @@
           </div>
         </div>
 
-        <!-- Breakdown -->
+        <!-- Breakdown (with tooltips) -->
         <div class="mt-6 space-y-2 text-sm">
-          <div class="flex justify-between"><span>Base</span><span id="base">$0</span></div>
-          <div class="flex justify-between"><span>Modules</span><span id="modules">$0</span></div>
-          <div class="flex justify-between hidden" id="lowCeilingRow"><span>Low ceiling adj.</span><span id="lowCeiling">$0</span></div>
-          <div class="flex justify-between hidden" id="egressRow"><span>Egress window(s)</span><span id="egressAmt">$0</span></div>
-          <div class="flex justify-between hidden" id="soundRow"><span>Soundproofing</span><span id="soundAmt">$0</span></div>
-          <div class="flex justify-between text-emerald-700 hidden" id="roughInRow"><span>Rough-ins credit</span><span id="roughInsAmt">$0</span></div>
-          <div class="flex justify-between font-semibold border-t pt-2"><span>Subtotal</span><span id="subtotal">$0</span></div>
-          <div class="flex justify-between font-semibold text-emerald-700"><span>Welcome Discount (10%)</span><span id="welcomeAmt">-$0</span></div>
+          <div class="flex justify-between">
+            <span>Base
+              <button class="tip" aria-label="About base"><span>i</span>
+                <span class="tip-card"><p>Finish rate × square footage. Rates: Starter $80/sq ft, Suite-Ready $110/sq ft, Luxury $150/sq ft.</p></span>
+              </button>
+            </span>
+            <span id="base">$0</span>
+          </div>
+
+          <div class="flex justify-between">
+            <span>Modules
+              <button class="tip" aria-label="About modules"><span>i</span>
+                <span class="tip-card"><p>Fixed add-ons: bedrooms, bathroom (2-pc/3-pc), office/den, laundry, wet bar, kitchenette.</p></span>
+              </button>
+            </span>
+            <span id="modules">$0</span>
+          </div>
+
+          <div class="flex justify-between hidden" id="lowCeilingRow">
+            <span>Low ceiling adj.
+              <button class="tip" aria-label="Low ceiling"><span>i</span>
+                <span class="tip-card"><p>If ceiling &lt; 7.5 ft, +10% of (Base + Modules) due to extra labor/materials.</p></span>
+              </button>
+            </span>
+            <span id="lowCeiling">$0</span>
+          </div>
+
+          <div class="flex justify-between hidden" id="egressRow">
+            <span>Egress window(s)
+              <button class="tip" aria-label="Egress"><span>i</span>
+                <span class="tip-card"><p>Safety exit/window per code. Budget $3,000 × bedrooms (min 1 if suite).</p></span>
+              </button>
+            </span>
+            <span id="egressAmt">$0</span>
+          </div>
+
+          <div class="flex justify-between hidden" id="soundRow">
+            <span>Soundproofing
+              <button class="tip" aria-label="Soundproofing"><span>i</span>
+                <span class="tip-card"><p>Extra acoustic treatment between floors (≈1.5% of Base + Modules).</p></span>
+              </button>
+            </span>
+            <span id="soundAmt">$0</span>
+          </div>
+
+          <div class="flex justify-between hidden" id="roughInRow">
+            <span>Rough-ins credit
+              <button class="tip" aria-label="Rough-ins"><span>i</span>
+                <span class="tip-card"><p>Credit if plumbing/electrical rough-ins already exist (-$2,000).</p></span>
+              </button>
+            </span>
+            <span id="roughInsAmt">$0</span>
+          </div>
+
+          <div class="flex justify-between font-semibold border-t pt-2">
+            <span>Subtotal
+              <button class="tip" aria-label="Subtotal"><span>i</span>
+                <span class="tip-card"><p>Sum of all items before discounts. We also show an original ±10% range for uncertainty.</p></span>
+              </button>
+            </span>
+            <span id="subtotal">$0</span>
+          </div>
+
+          <div class="flex justify-between font-semibold text-emerald-700">
+            <span>Welcome Discount (10%)
+              <button class="tip" aria-label="Welcome Discount"><span>i</span>
+                <span class="tip-card"><p>Automatic 10% discount for new customers. On-Time Guarantee is shown in the hero, not as a line item.</p></span>
+              </button>
+            </span>
+            <span id="welcomeAmt">-$0</span>
+          </div>
         </div>
 
         <!-- Original estimate (for transparency) -->
@@ -227,7 +294,66 @@
     </div>
   </section>
 
-  <!-- Your Project Snapshot -->
+  <!-- PACKAGES -->
+  <section id="packages" class="max-w-7xl mx-auto px-4 pb-12">
+    <h2 class="text-2xl font-bold">What’s Included by Package</h2>
+    <p class="text-ink-500 mt-1">All packages are code-conscious and include flooring. Choose the level that matches how you want to use the space.</p>
+
+    <div class="mt-6 grid md:grid-cols-3 gap-6">
+      <div class="rounded-2xl border bg-white shadow-soft p-6">
+        <div class="text-sm font-semibold">Starter Finish</div>
+        <p class="text-ink-500 text-sm mt-1">Best for a bright, durable <strong>family/rec space</strong> with storage.</p>
+        <ul class="mt-3 text-sm list-disc list-inside text-ink-700 space-y-1">
+          <li>Framing adjustments, drywall, taping, prime & paint</li>
+          <li>Basic lighting & electrical to code (potlights/switches as needed)</li>
+          <li>Interior doors, trim, baseboards</li>
+          <li><strong>Flooring:</strong> durable vinyl plank or carpet (typical selections)</li>
+          <li>Mechanical tie-ins as needed (no bath/kitchen by default)</li>
+        </ul>
+        <p class="text-xs text-ink-500 mt-3"><strong>Good fit:</strong> media room, playroom, home gym, storage.</p>
+      </div>
+
+      <div class="rounded-2xl border bg-white shadow-soft p-6 ring-2 ring-ink-900">
+        <div class="text-sm font-semibold">Suite-Ready (Most Popular)</div>
+        <p class="text-ink-500 text-sm mt-1">Designed for <strong>in-law or income suite readiness</strong>.</p>
+        <ul class="mt-3 text-sm list-disc list-inside text-ink-700 space-y-1">
+          <li>Everything in Starter</li>
+          <li><strong>1 bedroom</strong> layout + <strong>3-pc bathroom</strong></li>
+          <li><strong>Kitchenette rough-in</strong> (plumbing & dedicated circuit)</li>
+          <li><strong>Soundproofing</strong> between floors (resilient channel/insulation)</li>
+          <li>Dedicated circuits & GFCI as required</li>
+          <li><strong>Flooring:</strong> vinyl plank (upgrade options available)</li>
+          <li>Egress guidance & permit/drawings support</li>
+        </ul>
+        <p class="text-xs text-ink-500 mt-3"><strong>Good fit:</strong> future secondary suite, teen suite, guest space with bath.</p>
+      </div>
+
+      <div class="rounded-2xl border bg-white shadow-soft p-6">
+        <div class="text-sm font-semibold">Luxury</div>
+        <p class="text-ink-500 text-sm mt-1">For <strong>premium finishes</strong> and custom details throughout.</p>
+        <ul class="mt-3 text-sm list-disc list-inside text-ink-700 space-y-1">
+          <li>Everything in Suite-Ready</li>
+          <li>Custom millwork & feature/accent walls</li>
+          <li>Glass shower & tile upgrades; premium bath fixtures</li>
+          <li>Accent lighting, smart dimmers, designer hardware</li>
+          <li><strong>Flooring:</strong> premium vinyl plank, engineered wood, or tile</li>
+        </ul>
+        <p class="text-xs text-ink-500 mt-3"><strong>Good fit:</strong> high-end lounge, spa bath, showcase entertainment space.</p>
+      </div>
+    </div>
+
+    <details class="mt-6 rounded-2xl border bg-white shadow-soft p-5">
+      <summary class="flex items-center justify-between cursor-pointer">
+        <span class="font-semibold">Notes on permits, egress & inspections</span>
+        <svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 15.5 5.5 9h13L12 15.5z" /></svg>
+      </summary>
+      <div class="text-sm text-ink-600 mt-3 leading-relaxed">
+        We build to Ontario Building Code and guide you through egress sizing, ceiling clearances, and smoke/CO rules. Permit drawings and inspection support are included with suite-ready scopes. Final approvals are issued by your local building department.
+      </div>
+    </details>
+  </section>
+
+  <!-- Snapshot -->
   <section id="snapshot" class="max-w-7xl mx-auto px-4 pb-10">
     <div class="rounded-2xl border bg-white shadow-soft p-6">
       <h2 class="text-2xl font-bold">Your Project Snapshot</h2>
@@ -373,7 +499,7 @@
       if (kitchenette) chips.push('Kitchenette');
       $('chips').innerHTML = chips.map(t=>`<span class="chip">${t}</span>`).join(' ');
 
-      // --- Snapshot ---
+      // Snapshot
       $('snapPackage').textContent = finish;
       $('snapTotal').textContent = cad((lowAfter + highAfter)/2); // midpoint after discount
       const scopeBits = [];
@@ -414,7 +540,7 @@
       });
     });
 
-    // Initial render (Starter defaults)
+    // Initial render
     estimate();
   </script>
 </body>
