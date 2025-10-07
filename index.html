@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NewBase Renovations – Basement Design & Instant Estimate</title>
-  <meta name="description" content="Pick a preset, customize, and get an instant CAD estimate. Transparent packages and a NewBase 10% discount." />
+  <meta name="description" content="Pick a preset, customize, and get an instant CAD estimate. NewBase On-Time Promise: if we miss the timeline, you get 10% off." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 256 256%22><rect width=%22256%22 height=%22256%22 rx=%2236%22 fill=%220f172a%22/><path d=%22M52 156h56v48H52zM148 52h56v152h-56zM52 116h56v28H52z%22 fill=%22%23f59e0b%22/></svg>">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -89,7 +89,18 @@
     </div>
   </section>
 
-  <!-- Estimator with Presets + Discount -->
+  <!-- On-Time Promise Banner -->
+  <section class="max-w-7xl mx-auto px-4">
+    <div class="rounded-2xl border bg-brand-500/10 border-brand-500/40 p-4 flex items-center justify-between gap-4">
+      <div class="text-sm">
+        <div class="font-semibold">NewBase On-Time Promise</div>
+        <div class="text-ink-700">We finish on time — or you get <strong>10% off</strong> your project. No hoops.</div>
+      </div>
+      <a href="#contact" class="px-4 py-2 rounded-xl bg-ink-900 text-white text-sm">Book a Site Visit</a>
+    </div>
+  </section>
+
+  <!-- Estimator (with Presets) -->
   <section id="design" class="max-w-7xl mx-auto px-4 py-16">
     <div class="grid lg:grid-cols-2 gap-10 items-start">
       <!-- Left: Presets + Controls -->
@@ -175,15 +186,15 @@
           <label class="flex items-center gap-2 text-sm"><input id="sound" type="checkbox" checked /> Enhanced soundproofing</label>
         </div>
 
-        <!-- NewBase Discount -->
+        <!-- On-Time Promise demo toggle (for previewing discount only) -->
         <div class="p-4 rounded-xl bg-gray-50 border flex items-center justify-between">
           <div>
-            <div class="text-sm font-semibold">NewBase Discount</div>
-            <div class="text-xs text-ink-500">Limited-time 10% off your estimate.</div>
+            <div class="text-sm font-semibold">On-Time Promise (demo)</div>
+            <div class="text-xs text-ink-500">Toggle to preview totals if a job finished late. We aim to deliver on time.</div>
           </div>
           <label class="inline-flex items-center gap-2 text-sm">
-            <input id="applyDiscount" type="checkbox" checked />
-            <span>Apply 10% NewBase discount</span>
+            <input id="simulateLate" type="checkbox" />
+            <span>Simulate late delivery</span>
           </label>
         </div>
 
@@ -200,14 +211,14 @@
         <h3 class="font-semibold">Estimated Price Range</h3>
         <p class="text-ink-500 text-sm">Based on inputs and typical conditions in Ontario.</p>
 
-        <!-- Before Discount -->
+        <!-- Primary Range (no discount applied) -->
         <div class="mt-4 grid grid-cols-2 gap-4">
           <div class="p-4 rounded-xl bg-gray-50 border">
-            <div class="text-[11px] uppercase tracking-wide text-ink-500">Before Discount — Low</div>
+            <div class="text-xs text-ink-500">Estimate — Low</div>
             <div id="priceLow" class="text-2xl font-extrabold">$0</div>
           </div>
           <div class="p-4 rounded-xl bg-gray-50 border">
-            <div class="text-[11px] uppercase tracking-wide text-ink-500">Before Discount — High</div>
+            <div class="text-xs text-ink-500">Estimate — High</div>
             <div id="priceHigh" class="text-2xl font-extrabold">$0</div>
           </div>
         </div>
@@ -220,22 +231,23 @@
           <div class="flex justify-between hidden" id="soundRow"><span>Soundproofing</span><span id="soundAmt">$0</span></div>
           <div class="flex justify-between text-emerald-700 hidden" id="roughInRow"><span>Rough-ins credit</span><span id="roughInsAmt">$0</span></div>
           <div class="flex justify-between font-semibold border-t pt-2"><span>Subtotal</span><span id="subtotal">$0</span></div>
-          <div class="flex justify-between font-semibold text-emerald-700" id="discountRow"><span>NewBase Discount (10%)</span><span id="discountAmt">-$0</span></div>
+          <div class="flex justify-between font-semibold text-emerald-700"><span>Potential On-Time Promise Discount (10%)</span><span id="potentialDisc">-$0</span></div>
         </div>
 
-        <!-- After Discount -->
-        <div class="mt-4 grid grid-cols-2 gap-4">
+        <!-- Preview of discounted totals (only shown if simulateLate is on) -->
+        <div id="discountPreview" class="mt-4 grid grid-cols-2 gap-4 hidden">
           <div class="p-4 rounded-xl bg-brand-500/10 border border-brand-500/40">
-            <div class="text-[11px] uppercase tracking-wide text-ink-700">After Discount — Low</div>
+            <div class="text-[11px] uppercase tracking-wide text-ink-700">If Late — Low</div>
             <div id="priceLowDisc" class="text-2xl font-extrabold">$0</div>
           </div>
           <div class="p-4 rounded-xl bg-brand-500/10 border border-brand-500/40">
-            <div class="text-[11px] uppercase tracking-wide text-ink-700">After Discount — High</div>
+            <div class="text-[11px] uppercase tracking-wide text-ink-700">If Late — High</div>
             <div id="priceHighDisc" class="text-2xl font-extrabold">$0</div>
           </div>
         </div>
 
         <a href="#contact" class="mt-6 inline-block w-full text-center px-4 py-3 rounded-xl bg-ink-900 text-white font-semibold">Book a Free Site Visit</a>
+        <p class="text-[12px] text-ink-500 mt-2">* Discount applies only if project completion exceeds the agreed schedule (see contract for details).</p>
       </div>
     </div>
   </section>
@@ -321,7 +333,7 @@
     // Helpers & constants
     const $ = id => document.getElementById(id);
     const RATES = { Starter: 80, "Suite-Ready": 110, Luxury: 150 }; // CAD per sq ft
-    const watchIds = ['sqft','finish','bedrooms','bath','office','laundry','wetbar','kitchenette','ceiling','egress','roughins','sound','applyDiscount'];
+    const watchIds = ['sqft','finish','bedrooms','bath','office','laundry','wetbar','kitchenette','ceiling','egress','roughins','sound','simulateLate'];
 
     function cad(n){ return n.toLocaleString(undefined,{style:'currency',currency:'CAD',maximumFractionDigits:0}); }
 
@@ -338,7 +350,7 @@
       const egress      = $('egress').checked;
       const roughIns    = $('roughins').checked;
       const sound       = $('sound').checked;
-      const applyDisc   = $('applyDiscount').checked;
+      const simulateLate= $('simulateLate').checked;
 
       const base = sqft * (RATES[finish] || 0);
       const modules =
@@ -357,10 +369,10 @@
       const subtotal = base + modules + lowCeilingAdj + egressAmt + soundAmt + roughCredit;
       const low = subtotal * 0.9, high = subtotal * 1.1;
 
-      // Discount
-      const discount = applyDisc ? -0.10 * subtotal : 0;
-      const lowDisc  = low  + (applyDisc ? -0.10 * subtotal : 0);
-      const highDisc = high + (applyDisc ? -0.10 * subtotal : 0);
+      // Potential discount (not applied unless late)
+      const potentialDisc = -0.10 * subtotal;
+      const lowDisc  = low  + potentialDisc;
+      const highDisc = high + potentialDisc;
 
       // Update numbers
       $('priceLow').textContent = cad(low);
@@ -372,16 +384,18 @@
       $('soundAmt').textContent = cad(soundAmt);
       $('roughInsAmt').textContent = cad(roughCredit);
       $('subtotal').textContent = cad(subtotal);
-      $('discountAmt').textContent = (discount===0? '-$0' : cad(discount));
+      $('potentialDisc').textContent = cad(potentialDisc);
 
+      // Preview area
+      $('discountPreview').classList.toggle('hidden', !simulateLate);
       $('priceLowDisc').textContent = cad(lowDisc);
       $('priceHighDisc').textContent = cad(highDisc);
 
+      // Row visibility
       $('lowCeilingRow').classList.toggle('hidden', lowCeilingAdj === 0);
       $('egressRow').classList.toggle('hidden', egressAmt === 0);
       $('soundRow').classList.toggle('hidden', soundAmt === 0);
       $('roughInRow').classList.toggle('hidden', roughCredit === 0);
-      $('discountRow').classList.toggle('hidden', !applyDisc);
 
       // Chips preview
       const chips = [];
@@ -393,7 +407,7 @@
       if (laundry) chips.push('Laundry');
       if (wetbar) chips.push('Wet Bar');
       if (kitchenette) chips.push('Kitchenette');
-      if (applyDisc) chips.push('NewBase 10% Discount');
+      chips.push('On-Time Promise');
       $('chips').innerHTML = chips.map(t=>`<span class="chip">${t}</span>`).join(' ');
     }
 
