@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NewBase Renovations – Basement Design & Estimate</title>
+  <!-- Tailwind via CDN (no build tools needed) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-white text-gray-900">
+  <!-- Navbar -->
+  <header class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-xl bg-gray-900"></div>
+        <span class="font-bold text-xl">NewBase <span class="text-gray-500">Renovations</span></span>
+      </div>
+      <a href="#design" class="px-3 py-2 rounded-xl bg-gray-900 text-white text-sm">Design</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-6xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">
+          Add <span class="text-gray-900">New Living Space</span> to Your New Build.
+        </h1>
+        <p class="mt-4 text-gray-600 text-lg">
+          Suite-ready basements, family rec rooms, gyms, offices, and in-law apartments.
+          Plan it in minutes, get an instant price range, and book a free site visit.
+        </p>
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <a href="#design" class="px-5 py-3 rounded-2xl bg-gray-900 text-white font-semibold">Design Your Basement →</a>
+          <a href="#contact" class="px-5 py-3 rounded-2xl border font-semibold text-gray-900">Get a Quote</a>
+        </div>
+        <div class="mt-6 text-sm text-gray-600 flex items-center gap-3">
+          <span class="px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 font-medium">Winter Project Friendly</span>
+          <span>Permits • Egress • Soundproofing • Legal Suites</span>
+        </div>
+      </div>
+      <div class="aspect-[4/3] w-full rounded-3xl bg-gray-200 shadow-inner grid grid-cols-3 gap-2 p-2">
+        <!-- Placeholder gallery tiles -->
+        <div class="rounded-2xl bg-white shadow"></div><div class="rounded-2xl bg-white shadow"></div><div class="rounded-2xl bg-white shadow"></div>
+        <div class="rounded-2xl bg-white shadow"></div><div class="rounded-2xl bg-white shadow"></div><div class="rounded-2xl bg-white shadow"></div>
+        <div class="rounded-2xl bg-white shadow"></div><div class="rounded-2xl bg-white shadow"></div><div class="rounded-2xl bg-white shadow"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Placeholders for next steps -->
+  <section id="design" class="max-w-6xl mx-auto px-4 py-12">
+    <h2 class="text-2xl font-bold">Design Your Basement</h2>
+    <p class="text-gray-600 mt-2">We’ll add the simple estimator here in the next step.</p>
+  </section>
+
+  <section id="contact" class="max-w-6xl mx-auto px-4 py-12">
+    <h2 class="text-2xl font-bold">Contact</h2>
+    <p class="text-gray-600 mt-2">We’ll add a quick form next.</p>
+  </section>
+
+  <footer class="border-t">
+    <div class="max-w-6xl mx-auto px-4 py-6 text-sm text-gray-600">
+      © <span id="y"></span> NewBase Renovations
+    </div>
+  </footer>
+  <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
+</body>
+</html>
